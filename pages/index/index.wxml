@@ -1,0 +1,36 @@
+<view class="place_info"> 
+  <text>{{markers[0].title}}</text> ----
+  <text>{{markers[0].address}}</text> 
+  <view class="weather_wrap">
+    <text>{{weatherData.temperature}}</text>
+    <text>{{weatherData.weatherDesc}}</text>
+    <!-- <text>{{weatherData.wind}}</text> -->
+  </view>
+  <view class="transit_line_wrap">
+    <view class="sitelist">
+      <view class="road">
+        <view class='part' wx:for="{{siteList}}" wx:key="item.id">
+          <image
+            wx:if="{{item.haveBus}}"
+            style="width: 24px;height: 14px;position: absolute;left: 50%;margin-left:-12px;top: -6px;z-index: 20;"
+            mode="{{item.mode}}"
+            src="../../static/bus.png"
+          ></image>
+          <image
+            wx:if="{{item.near}}"
+            style="width: 24px;height: 14px;position: absolute;left: 50%;margin-left:16px;top: -6px;z-index: 20;"
+            mode="{{item.mode}}"
+            src="../../static/bus.png"
+          ></image>
+          <view class="bus_road" style="background: url(../../static/road.png)"></view>
+          <view class='name'>
+            <view class='dot_d dot_near' wx:if="{{nearest.siteName=== item.siteName}}"></view>
+            <view class='dot_d' wx:else></view>
+            <text class='text text_near' wx:if="{{nearest.siteName=== item.siteName}}">{{item.siteName}}</text>
+            <text class='text' wx:else>{{item.siteName}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view> 
