@@ -1,93 +1,112 @@
 var bmap = require('../../libs/bmap-wx.js');
+import { host } from '../../constants.js';
+let wxMarkerData = [];
 Page({
+  // points: [
+  //   { latitude: '31.262335', longitude: '121.527' },
+  //   { latitude: '31.264774', longitude: '121.533504' },
+  //   { latitude: '31.263788', longitude: '121.519621' },
+  //   { latitude: '31.265950', longitude: '121.523940' },
+  //   { latitude: '31.266428', longitude: '121.525977' },
+  //   { latitude: '31.266786', longitude: '121.522479' }
+  // ],
   data: {
-    markers: [],
-    weatherData: '',
-    siteList: [
-      {
-        id: 1,
-        siteName: '锦带路迎春路 浦东新区办公中心',
-        latitude: '31.222',
-        longitude: '121.545',
-      },
-      {
-        id: 2,
-        siteName: '合欢路丁香路 浦东市民中心',
-        latitude: '31.223',
-        longitude: '121.547',
-      },
-      {
-        id: 3,
-        siteName: '锦绣路世纪大道',
-        latitude: '31.218',
-        longitude: '121.546',
-      },
-      {
-        id: 4,
-        siteName: '上海科技馆地铁站',
-        latitude: '31.217',
-        longitude: '121.547',
-      },
-      {
-        id: 5,
-        siteName: '锦绣路世纪大道 上海科技馆',
-        latitude: '31.218',
-        longitude: '121.548',
-      },
-      {
-        id: 6,
-        siteName: '民生路丁香路',
-        latitude: '31.225',
-        longitude: '121.549',
-      },
-      {
-        id: 7,
-        siteName: '锦绣路花木路',
-        latitude: '31.212',
-        longitude: '121.541',
-      },
-    ],
-    listWidth: '100%',
-    busList: [
-      {
-        id: 1,
-        latitude: '31.2226',
-        longitude: '121.545',
-      },
-      {
-        id: 2,
-        latitude: '31.218',
-        longitude: '121.548',
-      },
-      {
-        id: 3,
-        latitude: '31.218',
-        longitude: '121.5468',
-      },
-    ],
-    nearest: {
-      siteName: '锦绣路世纪大道',
-      latitude: '31.218',
-      longitude: '121.546',
-    }
+    weatherData: {},
+    // latitude: '31.261531',
+    // longitude: '121.385880',
+    latitude: '',
+    longitude: '',
+    markers: [{
+      id: 1,
+      name: '榆林路',
+      latitude: '31.262335',
+      longitude: '121.527',
+      // direction: '3',
+    }, {
+      id: 2,
+      name: '江浦路',
+      latitude: '31.264774',
+      longitude: '121.533504',
+      // direction: '2',
+    }, {
+      id: 3,
+      name: '大连路',
+      latitude: '31.263788',
+      longitude: '121.519621',
+      // direction: '1',
+    }],
+    bus_markers: [{
+      id: 4,
+      name: '公交01',
+      latitude: '31.205167',
+      longitude: '121.383133',
+      direction: '1',
+    },
+    {
+      id: 5,
+      name: '公交02',
+      latitude: '31.220435',
+      longitude: '121.316528',
+      direction: '2',
+    },
+    {
+      id: 6,
+      name: '公交03',
+      latitude: '31.201056',
+      longitude: '121.279449',
+      direction: '1',
+    }],
+    // polyline: [{
+    //   points: [
+    //     {
+    //       longitude: 121.519621,
+    //       latitude: 31.263788
+    //     },
+    //     {
+    //       longitude: 121.527,
+    //       latitude: 31.262335
+    //     },
+    //     {
+    //       longitude: 121.533504,
+    //       latitude: 31.264774
+    //     }
+    //   ],
+    //   color: '#FF0000DD',
+    //   width: 2,
+    //   dottedLine: true
+    // }],
+    // controls: [{
+    //   id: 1,
+    //   iconPath: '/static/13.png',
+    //   position: {
+    //     left: 0,
+    //     top: 300 - 50,
+    //     width: 20,
+    //     height: 20
+    //   },
+    //   clickable: true
+    // }]
   },
-  onLoad: function () {
-    var that = this;
-    // console.log(that.data.siteList )
-    let siteList = that.data.siteList;
-    for (let i = 0; i < siteList.length-1;i++){
-      that.data.busList.forEach(itm => {
-        if (itm.longitude === siteList[i].longitude  ) {
-          siteList[i].haveBus = true;
-        } else if (itm.longitude > siteList[i].longitude && itm.longitude < siteList[i+1].longitude ) {
-          siteList[i].near = true;
-        }
-      })
-    }
-    // console.log(siteList )
-    that.setData({
-      siteList: siteList,
+  onNotice() {
+    wx.navigateTo({
+      url: '../detail/detail?id=2'
     })
+  },
+  markertap(e) {
+    console.log(e.markerId)
+  }, 
+  // showSearchInfo: function (data, id) {
+  //   var that = this;
+  //   data = data.filter( item => { return item.id === id})
+  //   // console.log(data[0].siteName)
+  //   that.setData({
+  //     selectSite: {
+  //       siteName: '地址：' + data[0].siteName + '\n',
+  //     }
+  //   });
+  // },
+  onLoad: function () {
+    let that = this;
     // 新建百度地图对象 
     var BMap = new bmap.BMapWX({
       ak: 'kQDDeY1AnK9vZ6TaEBxGa8Oa0ABokwQH'
@@ -95,29 +114,100 @@ Page({
     var fail = function (data) {
       console.log(data)
     };
-    var success = function (data) {
-      // console.log( data )
-      that.setData({
-        markers: data.wxMarkerData
-      });
-    }
     var queryWetherSuccess = function(data) {
-      // console.log( data )
       that.setData({
         weatherData: data.currentWeather[0]
       })
     } 
-    // 发起POI检索请求 
-    BMap.search({
-      "query": '公交站',
-      fail: fail,
-      success: success,
-    });
-
     // 发起weather请求 
     BMap.weather({
-      fail: fail,
-      success: queryWetherSuccess
+      fail,
+      success: queryWetherSuccess,
+      iconPath: '../../static/13.png',
+      // 此处需要在相应路径放置图片文件 
+      iconTapPath: '../../static/13.png'
     });
-  },
+
+    wx.getLocation({
+      type: 'gcj02',
+      success(res) {
+        that.setData({
+          latitude: res.latitude,
+          longitude: res.longitude
+        })
+        wx.setStorage({
+          key: 'user_location',
+          data: JSON.stringify({ latitude: res.latitude, longitude: res.longitude })
+        })
+      },
+      fail,
+    })
+
+    wx.request({
+      url: `${host}/api/getlocation/`,
+      data: {},
+      method: "GET",
+      header: {
+        'content-type': 'application/json'
+      },
+      success(res) {
+        // console.log(res.data)
+        // that.setData({
+        //   markers: res.data,
+        // })
+        //处理markers
+        let markers = res.data.map(item => {
+          let iconPath = '';
+          // if (item.direction === '2') {
+          //   iconPath = "../../static/4.png";
+          // } else if (item.direction === '3') {
+          //   iconPath = "../../static/13.png";
+          // }
+          return {
+            ...item,
+            width: 22,
+            height: 30,
+            iconPath,
+            callout: {
+              content: item.name,
+              textAlign: "center",
+              bgColor: "#fff",
+              padding: "8",
+              color: "#1890FF",
+              display: "BYCLICK",
+            }
+          }
+        })
+        let bus_markers = that.data.bus_markers.map(item => {
+          let iconPath = '';
+          if (item.direction === '2') {
+            iconPath = "../../static/position_red.png";
+          } else {
+            iconPath = "../../static/position_red.png";
+          }
+          return {
+            ...item,
+            width: 22,
+            height: 30,
+            iconPath,
+            callout: {
+              content: item.name,
+              textAlign: "center",
+              bgColor: "#fff",
+              padding: "8",
+              color: "#1890FF",
+              display: "BYCLICK",
+            }
+          }
+        })
+        that.setData({ markers: [...markers, ...bus_markers] })
+    // that.setData({ markers})
+      },
+      fail(err) {
+        console.log(err)
+      }
+    })
+
+    
+  }
 })

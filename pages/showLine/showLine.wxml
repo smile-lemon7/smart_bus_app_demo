@@ -1,0 +1,8 @@
+<view>
+  <linePanel 
+    id="linePanel"
+    siteList="{{siteList}}" 
+    busList="{{busList}}" 
+    nearest="{{nearest}}" 
+  />
+</view>

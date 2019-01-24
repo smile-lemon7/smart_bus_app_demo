@@ -2,8 +2,15 @@
   "pages": [
     "pages/index/index",
     "pages/line/line",
-    "pages/detail/detail"
+    "pages/detail/detail",
+    "pages/showLine/showLine",
+    "pages/baiduMap/baiduMap"
   ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
+  },
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
@@ -19,14 +26,14 @@
       {
         "pagePath": "pages/index/index",
         "text": "首页",
-        "iconPath": "./static/bus2.png",  
-        "selectedIconPath": "./static/bus.png"  
+        "iconPath": "./static/bus2.png",
+        "selectedIconPath": "./static/bus.png"
       },
       {
-        "pagePath": "pages/line/line",
+        "pagePath": "pages/showLine/showLine",
         "text": "路线",
-        "iconPath": "./static/line2.png",  
-        "selectedIconPath": "./static/line.png"  
+        "iconPath": "./static/line2.png",
+        "selectedIconPath": "./static/line.png"
       }
     ]
   }

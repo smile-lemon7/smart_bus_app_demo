@@ -1,0 +1,37 @@
+<view class="transit_line_wrap">
+    <view class="sitelist">
+      <view class="road">
+        <view class='part' wx:for="{{siteList}}" wx:key="item.id">
+          <image
+            wx:if="{{item.hasBus==='arrive'}}"
+            style="width: 24px;height: 14px;position: absolute;left: 50%;margin-left:-12px;top: -6px;z-index: 20;"
+            mode="{{item.mode}}"
+            src="../../static/bus.png"
+          ></image>
+          <image
+            wx:if="{{item.hasBus==='near'}}"
+            style="width: 24px;height: 14px;position: absolute;left: 50%;margin-left:-36px;top: -6px;z-index: 20;"
+            mode="{{item.mode}}"
+            src="../../static/bus.png"
+          ></image>
+          <view class="bus_road" style="background: url(http://img1.imgtn.bdimg.com/it/u=2321064825,3591499448&fm=26&gp=0.jpg)"></view>
+          <view class='name'>
+            <view class='dot_d dot_near' wx:if="{{nearest.station=== item.name}}"></view>
+            <view class='dot_d' wx:else></view>
+            <text class='text text_near' wx:if="{{nearest.station=== item.name}}" catchtap="onSiteHandle" data-site-info="{{item}}" id="{{item.id}}">{{item.name}}</text>
+            <text class='text' wx:else catchtap="onSiteHandle" data-site-info="{{item}}" id="{{item.id}}">{{item.name}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <modal show="{{showModal}}" height='50%' bindcancel="modalCancel" bindconfirm='modalConfirm'>
+      <view class='modal_content'> 
+        <view class="modal_title">当前站: {{siteInfo.name}}</view>
+        <view class="modal_con">
+          <view class="arrival_time">到站大约还有: <text class="arrival_time_text">{{siteInfo.busInfo.time}}</text></view>
+          <view class="arrival_time">距该站大约还有: <text class="arrival_time_text">{{siteInfo.busInfo.distance}}</text></view>
+          <view class="plate_number">车牌号: {{siteInfo.busInfo.name}}</view>
+        </view>
+      </view>
+    </modal>
+  </view>
